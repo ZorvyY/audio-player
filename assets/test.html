@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+  	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  	<title>TEST THING</title>
+  	
+  </head>
+  <body>
+	<p id=info>This text shall be replaced.</p>
+	<script charset="utf-8">
+	  (async function () {
+		fetch('http://localhost:1337/songs/02%20Hol\'%20Up.mp3')
+		  .then(async (info) => {
+			info = await info.json();
+			document.getElementById('info')
+			  .innerText = JSON.stringify(info);
+
+			let song = new Audio('http://localhost:1337/'+info.url);
+			song.controls = true;
+			document.body.appendChild(song);
+			song.play();
+		  });
+	  })();
+	</script>
+  </body>
+
+
+</html>
