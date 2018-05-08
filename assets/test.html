@@ -1,16 +1,20 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-  	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-  	<title>TEST THING</title>
-  	
+	<title>TEST THING</title>
+	
   </head>
   <body>
 	<p id=info>This text shall be replaced.</p>
+  <canvas id="canvas" style="border: 1px solid #000" height=500 width=1000></canvas>
+	<script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js" charset="utf-8"></script>
+	<script src="interpolate.js" charset="utf-8"></script>
+	<script src="app.js" charset="utf-8"></script>
 	<script charset="utf-8">
 	  (async function () {
-		fetch('http://localhost:1337/songs/02%20Hol\'%20Up.mp3')
+		fetch('http://localhost:1337/songs/bhool.mp3')
 		  .then(async (info) => {
 			info = await info.json();
 			document.getElementById('info')
@@ -18,8 +22,26 @@
 
 			let song = new Audio('http://localhost:1337/'+info.url);
 			song.controls = true;
+			song.crossOrigin = 'anonymous';
 			document.body.appendChild(song);
+			let stream = song.captureStream();
+			let m = new MediaRecorder(stream);
+			var chunks = [];
+
+			m.onstop = function(e) {
+			//  saveAs(new File(chunks, 'song.mp3'));
+			}
+
+			m.ondataavailable = function(e) {
+			  chunks.push(e.data);
+			}
 			song.play();
+			setTimeout(() => {
+			  song.currentTime = 0;
+			  m.start();
+			  visualizeStream(stream);
+			}, 100);
+			setTimeout(() => m.stop(), 3000);
 		  });
 	  })();
 	</script>

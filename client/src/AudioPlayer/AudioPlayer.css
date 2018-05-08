@@ -1,0 +1,27 @@
+.player-container {
+    border: 1px solid #000;
+}
+
+.player-container .title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.second-line-separator::before {
+	content: " ";
+}
+
+.second-line-separator::after {
+	content: " ";
+}
+
+.player-container .title {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.play {
+    background: transparent;
+	padding: 0px;
+    border: none !important;
+}

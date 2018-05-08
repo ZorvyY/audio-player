@@ -14,9 +14,17 @@ app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/songs/:songName', async (req, res) => {
   const songName = 'assets/' + req.params.songName;
-  const info = await songInfo(songName);
-  console.log(info);
-  res.send(info);
+  try {
+    const info = await songInfo(songName);
+    console.log(info);
+    res.send(info);
+  } catch (e) {
+    if (e.type == 'tagFormat') {
+      res.send({'url': songName});
+    }
+    console.log(e);
+    res.send('PANIC');
+  }
 });
 
 app.listen(port, host);
